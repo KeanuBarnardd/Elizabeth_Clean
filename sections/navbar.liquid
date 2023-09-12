@@ -1,9 +1,12 @@
-<div class="relative bg-white" x-data="{mobileMenuOpen: true}">
+{% assign main_menu_linklist = linklists[section.settings.menu].links %}
+
+
+  <div class="relative bg-white" x-data="{mobileMenuOpen: true}">
   <div class="mx-auto px-4 sm:px-6">
     <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
       <!-- STORE NAME / STORE LOGO -->
       <div class="flex justify-start lg:flex-1 truncate">
-        <h1 class="text-xl font-bold truncate">{{ shop.name }}</h1>
+        <h1 class="text-xl font-bold truncate">{{ section.settings.mobile_menu_title }}</h1>
       </div>
 
       <div class="-mr-2 -my-2 ml-3 md:hidden">
@@ -18,7 +21,7 @@
       <!-- NAVIGATION MENU -->
       <nav x-data="{open: false}" class="hidden md:flex space-x-10">
         <!-- If our our link does not have sublinks then we will display single link -->
-        {% for link in linklists.main-menu.links %}
+        {% for link in main_menu_linklist %}
           {% if link.links != blank %}
             <div class="relative ">
 
@@ -77,7 +80,7 @@
         <!-- MOBILE MENU HEADER TITLE PLUS CLOSE BUTTON -->
         <div class="flex items-center justify-between pb-3">
           <div>
-            <h1 class="text-lg text-gray-500">{{ shop.name }}</h1>
+            <h1 class="text-lg text-gray-500">{{ section.settings.mobile_menu_title }}</h1>
           </div>
           <div class="-mr-2">
             <button
@@ -92,7 +95,7 @@
         <!-- NAVIGATION LINKS FOR MOBILE MENU -->
         <div class="pt-3" x-data="{open:false}">
           <nav class="grid gap-y-7">
-            {% for link in linklists.main-menu.links %}
+            {% for link in main_menu_linklist %}
               {% assign link_handle = link.handle | replace: '-', '_' %}
               {% if link.links != blank %}
                 <div class="relative">
@@ -125,3 +128,23 @@
     </div>
   </div>
 </div>
+
+{% schema %}
+  {
+    "name": "Navigational Bar",
+    "settings": [
+      {
+        "type": "text",
+        "id": "mobile_menu_title",
+        "label": "Title",
+        "default": "Menu",
+        "info": "This is the title for the Mobile Menu container"
+      }, {
+        "type": "link_list",
+        "id": "menu",
+        "label": "Navbar Menu",
+        "default": "main-menu"
+      }
+    ]
+  }
+{% endschema %}
