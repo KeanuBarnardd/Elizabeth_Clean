@@ -1,35 +1,43 @@
-<article>
+<article itemscope itemtype="http://schema.org/BlogPosting">
   {% for block in section.blocks %}
     {% case block.type %}
+
       {% when 'article_title' %}
+
       <div class="flex items-center justify-center">
         <div class="max-w-7xl text-center">
           <a href={{blog.url}} class="text-base uppercase text-gray-500 hover:text-gray-900 font-bold">{{ blog.title }}</a>
           <h1 class="text-4xl md:text-6xl font-medium">{{ article.title }}</h1>
         </div>
       </div>
+
       {% when 'article_author' %}
+
       <div class="flex items-center justify-center">
         <div class="max-w-7xl text-center">
           {% if section.settings.enable_author %}
-            <small>{{ article.author }}</small>
+            <small itemprop="author">{{ article.author }}</small>
           {% endif %}
         </div>
       </div>
+
       {% when 'article_date' %}
+
       <div class="flex items-center justify-center">
         <div class="max-w-7xl text-center">
           {% if section.settings.enable_published_date %}
-            <time datetime={{article.published_at | date: '%Y-%m-%d' }}>{{ article.published_at | date: format: 'on_date' }}</time>
+            <time itemprop="datePublished" datetime={{article.published_at | date: '%Y-%m-%d' }}>{{ article.published_at | date: format: 'on_date' }}</time>
           {% endif %}
         </div>
       </div>
 
 
       {% when 'featured_image' %}
+
       <div class="max-w-7xl bg-blue-100 rounded-lg mx-2 md:mx-auto overflow-hidden my-4">
         {% if article.image != blank %}
           <img
+            itemprop="image "
             class="w-full h-80 md:h-96 object-cover object-center"
             src={{article.image | img_url: 'large' }}
             loading="lazy"
@@ -41,8 +49,9 @@
       </div>
 
       {% when 'article_content' %}
+
       <div class="flex items-center justify-center">
-        <div class="max-w-4xl">
+        <div itemprop="articleBody" class="max-w-4xl">
           <div class="">{{ article.content }}</div>
         </div>
       </div>
@@ -85,6 +94,33 @@
 
     {% form 'new_comment', article %}
       <div class="flex-1 mx-auto items-center justify-center max-w-4xl px-4">
+
+        {% if form.errors %}
+          <div class="border p-5">
+            <div class="flex flex-row items-center w-full my-3">
+              <i class="fa-solid fa-triangle-exclamation text-red-500"></i>
+              <div class="text-sm font-medium ml-3 text-red-500">
+                Oh no! Your comment was not posted.
+              </div>
+            </div>
+            <ul class="px-4 mb-3 ml-7 list-decimal">
+              {% for error in form.errors %}
+                <li class="span">{{ form.errors.messages[error] }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% elsif form.posted_successfully? %}
+          <div class="border p-5">
+            <div class="flex flex-row items-center w-full my-3">
+              <i class="fa-solid fa-circle-check text-green-500"></i>
+              <div class="text-sm font-medium ml-3 text-green-500">
+                Comment Posted Succesfully
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+
         <div class="px-1 md:flex mb-3">
           <div class="px-3 md:w-1/2">
             <label for="comment_author" class="text-gray-700 font-medium uppercase text-xs mb-2">name</label>
