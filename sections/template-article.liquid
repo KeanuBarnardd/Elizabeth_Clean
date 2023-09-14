@@ -51,6 +51,82 @@
   {% endfor %}
 </article>
 
+{% if blog.comments_enabled? %}
+  <div class="my-8" id="comments">
+    {% if article.comments_count > 0 %}
+
+      <div class="flex-1 items-center justify-center mx-auto max-w-4xl px-4">
+        <h1 class="text-lg mb-4 font-medium">
+          See what people are saying
+        </h1>
+
+        {% paginate article.comments by 12 %}
+          {% for c in article.comments %}
+            <div class="flex-1 border my-4 px-4 py-2 sm:px-4 sm:py-4 leading-relaxed">
+              <span class="comment-author">{{ c.author }}</span>
+              <span class="text-xs text-gray-400">{{ c.created_at | date: format: 'default' }}</span>
+            </div>
+          {% endfor %}
+        {% endpaginate %}
+      </div>
+
+
+    {% else %}
+      There are no comments in this article
+    {% endif %}
+  </div>
+
+  <div class="mb-8" id="comment_form">
+
+    {% form 'new_comment', article %}
+      <div class="flex-1 mx-auto items-center justify-center max-w-4xl px-4">
+        <div class="px-1 md:flex mb-3">
+          <div class="px-3 md:w-1/2">
+            <label for="comment_author" class="text-gray-700 font-medium uppercase text-xs mb-2">name</label>
+            <input
+              class="w-full text-gray-700 border py-3 px-4 mb-3 focus:outline-none"
+              type="text"
+              name="comment[author]"
+              id="comment_author"
+              placeholder="Jane Doe"
+              required>
+          </div>
+          <div class="px-3 md:w-1/2">
+            <label for="comment_email" class="text-gray-700 font-medium uppercase text-xs mb-2">Email</label>
+            <input
+              class="w-full text-gray-700 border py-3 px-4 mb-3 focus:outline-none"
+              type="email"
+              name="comment[email]"
+              id="comment_email"
+              placeholder="Jane@doe.com"
+              required>
+          </div>
+        </div>
+        <div class="px-1 md:flex mb-3">
+          <div class="md:w-full px-3">
+            <label for="comment_content" class="text-gray-700 font-medium uppercase text-xs mb-2">Comment</label>
+            <textarea
+              class="w-full text-gray-700 resize-none h-20 py-2 px-3 focus:outline-none border"
+              name="comment[body]"
+              id="comment_content"
+              required></textarea>
+          </div>
+
+        </div>
+        <div class="px-1 md:flex mb-3">
+          <div class="md:w-full px-3">
+            <input
+              class="w-full cursor-pointer px-4 py-2 border text-base font-medium text-white bg-gray-900 hover:bg-gray-500"
+              type="submit"
+              value="Post Comment">
+          </div>
+        </div>
+      </div>
+    {% endform %}
+  </div>
+{% endif %}
+
+
 
 {% schema %}
   {
