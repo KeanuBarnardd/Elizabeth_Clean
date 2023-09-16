@@ -1,9 +1,9 @@
-<nav class="flex justify-center  bg-slate-300">
-  <div class="flex justify-between w-full  max-w-6xl px-2 py-2 bg-blue-600 ">
-    <h1 class="font-semibold  text-2xl ">{{ shop.name }}</h1>
-    <div class="flex gap-5">
+<nav class="flex justify-center">
+  <div class="flex justify-between w-full max-w-6xl px-2 py-2">
+    <h1 class=" font-medium font-inter text-2xl  ">{{ shop.name }}</h1>
+    <div class="flex items-center align-middle font-inter gap-5 ">
       {% for link in linklists.main-menu.links %}
-        <a href={{link.url}}>{{ link.title }}</a>
+        <a class=" font-semibold  text-sm" href={{link.url}}>{{ link.title }}</a>
       {% endfor %}
     </div>
   </div>
